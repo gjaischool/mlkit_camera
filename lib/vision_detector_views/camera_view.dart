@@ -50,21 +50,26 @@ class _CameraViewState extends State<CameraView> {
   }
 
   Future<void> _startCamera() async {
-    final camera = _cameras[_cameraIndex];
-    _controller = CameraController(
-      camera,
-      ResolutionPreset.low,
-      enableAudio: false,
-      imageFormatGroup: Platform.isAndroid
-          ? ImageFormatGroup.nv21
-          : ImageFormatGroup.bgra8888,
-    );
+    try {
+      final camera = _cameras[_cameraIndex];
+      _controller = CameraController(
+        camera,
+        ResolutionPreset.medium, // low에서 medium으로 변경
+        enableAudio: false,
+        imageFormatGroup: Platform.isAndroid
+            ? ImageFormatGroup.nv21
+            : ImageFormatGroup.bgra8888,
+      );
 
-    await _controller?.initialize();
-    if (!mounted) return;
+      await _controller?.initialize();
+      if (!mounted) return;
 
-    await _controller?.startImageStream(_processImage);
-    setState(() {});
+      debugPrint('카메라 초기화 완료: ${camera.lensDirection}');
+      await _controller?.startImageStream(_processImage);
+      setState(() {});
+    } catch (e) {
+      debugPrint('카메라 시작 에러: $e');
+    }
   }
 
   void _processImage(CameraImage image) {

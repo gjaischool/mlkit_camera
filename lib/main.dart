@@ -127,12 +127,14 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
     }
   }
 
+  // 상태 초기화 함수
   void _resetState() {
     _closedEyeFrameCount = 0;
     _stopAlarm();
     setState(() => _showEyeCloseAlert = false);
   }
 
+  // 알람 시작 함수
   Future<void> _triggerAlarm() async {
     if (!_isAlarmPlaying) {
       _isAlarmPlaying = true;
@@ -140,6 +142,7 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
     }
   }
 
+  // 알람 정지 함수
   Future<void> _stopAlarm() async {
     if (_isAlarmPlaying) {
       await _audioPlayer.stop();
